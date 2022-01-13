@@ -1,0 +1,297 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 10.19 (Ubuntu 10.19-0ubuntu0.18.04.1)
+-- Dumped by pg_dump version 10.19 (Ubuntu 10.19-0ubuntu0.18.04.1)
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: book; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.book (
+    id integer NOT NULL,
+    name character varying(255),
+    price numeric,
+    storage character varying(255),
+    count numeric
+);
+
+
+ALTER TABLE public.book OWNER TO postgres;
+
+--
+-- Name: book_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+ALTER TABLE public.book ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.book_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- Name: customer; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.customer (
+    id integer NOT NULL,
+    last_name character varying(255),
+    area character varying(255),
+    discount numeric
+);
+
+
+ALTER TABLE public.customer OWNER TO postgres;
+
+--
+-- Name: customer_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+ALTER TABLE public.customer ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.customer_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- Name: purchase; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.purchase (
+    id integer NOT NULL,
+    date date,
+    seller integer,
+    customer integer,
+    book integer,
+    count numeric,
+    price numeric
+);
+
+
+ALTER TABLE public.purchase OWNER TO postgres;
+
+--
+-- Name: purchase_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+ALTER TABLE public.purchase ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.purchase_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- Name: shop; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.shop (
+    id integer NOT NULL,
+    name character varying(255),
+    area character varying(255),
+    commissions numeric
+);
+
+
+ALTER TABLE public.shop OWNER TO postgres;
+
+--
+-- Name: shop_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+ALTER TABLE public.shop ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.shop_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- Data for Name: book; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.book (id, name, price, storage, count) FROM stdin;
+1	Ночной дозор	313	Дом книги	30
+2	Дневной дозор	500	Читай город	40
+3	1984	250	Домик книги	10
+4	Мы	430	Дом книги	50
+5	Средства автоматизации в Microsoft Windows (+ CD-ROM)	1000	Окей	10
+6	Древняя летопись	20001	Дом книги	6
+7	Последний дозор	300	ЛитРес	50
+\.
+
+
+--
+-- Data for Name: customer; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.customer (id, last_name, area, discount) FROM stdin;
+1	Тарасов	Канавинский	0.01
+2	Акимов	Нижегородский	0.1
+3	Захаров	Московский	0.2
+4	Харитонова	Приокский	0.02
+5	Смирнова	Автозаводский	0.12
+\.
+
+
+--
+-- Data for Name: purchase; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.purchase (id, date, seller, customer, book, count, price) FROM stdin;
+1	2019-10-15	1	1	1	2	626
+2	2020-02-18	3	4	2	5	2500
+3	2022-01-12	5	3	6	3	60003
+4	2021-11-12	2	2	3	1	250
+5	2020-08-04	9	5	7	1	300
+\.
+
+
+--
+-- Data for Name: shop; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.shop (id, name, area, commissions) FROM stdin;
+2	Домик Книги	Нижегородский	0.1
+1	Дом Книги	Канавинский	0.01
+3	Читай город	Приокский	0.2
+5	Дом книги	Приокский	0.02
+4	Читай город	Приокский	0.2
+7	Лента	Сормовский	0.02
+8	Окей	Советский	0.03
+9	ЛитРес	Автозаводский	0.2
+\.
+
+
+--
+-- Name: book_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.book_id_seq', 7, true);
+
+
+--
+-- Name: customer_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.customer_id_seq', 5, true);
+
+
+--
+-- Name: purchase_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.purchase_id_seq', 5, true);
+
+
+--
+-- Name: shop_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.shop_id_seq', 9, true);
+
+
+--
+-- Name: book book_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.book
+    ADD CONSTRAINT book_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: customer customer_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.customer
+    ADD CONSTRAINT customer_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: purchase purchase_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.purchase
+    ADD CONSTRAINT purchase_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: shop shop_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.shop
+    ADD CONSTRAINT shop_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: purchase bookid; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.purchase
+    ADD CONSTRAINT bookid FOREIGN KEY (book) REFERENCES public.book(id);
+
+
+--
+-- Name: purchase buyer; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.purchase
+    ADD CONSTRAINT buyer FOREIGN KEY (customer) REFERENCES public.customer(id);
+
+
+--
+-- Name: purchase shop; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.purchase
+    ADD CONSTRAINT shop FOREIGN KEY (seller) REFERENCES public.shop(id);
+
+
+--
+-- PostgreSQL database dump complete
+--
+
